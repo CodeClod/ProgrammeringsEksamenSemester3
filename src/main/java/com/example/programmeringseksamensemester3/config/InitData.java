@@ -33,8 +33,18 @@ public class InitData implements CommandLineRunner {
 
         Sejlbåd sejlbåd2 = new Sejlbåd();
         sejlbåd2.setNavn("Titanic");
-        sejlbåd2.setBådtype("Mindre end 25fod");
+        sejlbåd2.setBådtype("Længere end 40fod");
         sejlbådRepository.save(sejlbåd2);
+
+        Sejlbåd sejlbåd3 = new Sejlbåd();
+        sejlbåd3.setNavn("The Maenad");
+        sejlbåd3.setBådtype("Mellem 25-40fod");
+        sejlbådRepository.save(sejlbåd3);
+
+        Sejlbåd sejlbåd4 = new Sejlbåd();
+        sejlbåd4.setNavn("Plastic Floaty");
+        sejlbåd4.setBådtype("Mindre end 25fod");
+        sejlbådRepository.save(sejlbåd4);
 
         // Add kapsejlads' to db
         kapsejladsService.createKapsejlads();

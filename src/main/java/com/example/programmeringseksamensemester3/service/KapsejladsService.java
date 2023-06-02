@@ -22,18 +22,19 @@ import java.util.Set;
 
             Set<LocalDate> wednesdays = new HashSet<>();
             LocalDate current = startDate;
+
             while (current.isBefore(endDate) || current.isEqual(endDate)) {
                 if (current.getDayOfWeek() == DayOfWeek.WEDNESDAY) {
                     wednesdays.add(current);
+
+                    for (int i = 1; i <= 3; i++) {
+                        Kapsejlads kapsejlads = new Kapsejlads();
+                        kapsejlads.setNavn("Kapsejlads " + current.toString() + " " + i);
+                        kapsejlads.setKapsejladsDato(current);
+                        kapsejladsRepository.save(kapsejlads);
+                    }
                 }
                 current = current.plusDays(1);
-            }
-
-            for (LocalDate wednesday : wednesdays) {
-                Kapsejlads kapsejlads = new Kapsejlads();
-                kapsejlads.setNavn("Kapsejlads " + wednesday.toString());
-                kapsejlads.setKapsejladsDato(wednesday);
-                kapsejladsRepository.save(kapsejlads);
             }
         }
     }

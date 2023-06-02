@@ -1,7 +1,9 @@
 package com.example.programmeringseksamensemester3.controller;
 
+import com.example.programmeringseksamensemester3.model.Kapsejlads;
 import com.example.programmeringseksamensemester3.model.KapsejladsDeltager;
 import com.example.programmeringseksamensemester3.repository.KapsejladsDeltagerRepository;
+import com.example.programmeringseksamensemester3.repository.KapsejladsRepository;
 import jakarta.persistence.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,16 @@ public class KapsejladsDeltagerController {
     @Autowired
     KapsejladsDeltagerRepository kapsejladsDeltagerRepository;
 
-    @PostMapping
+    @Autowired
+    KapsejladsRepository  kapsejladsRepository;
+
+    @GetMapping("/getAllByKapsejlads")
+    public ResponseEntity<List<KapsejladsDeltager>> getAllKapsejladsDeltagere(@RequestBody Kapsejlads kapsejlads) {
+        List<KapsejladsDeltager> deltagerList = kapsejladsDeltagerRepository.getKapsejladsDeltagerByKapsejlads(kapsejlads);
+        return new ResponseEntity<>(deltagerList, HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
     public ResponseEntity<KapsejladsDeltager> createKapsejladsDeltager(@RequestBody KapsejladsDeltager kapsejladsDeltager) {
         KapsejladsDeltager createdDeltager = kapsejladsDeltagerRepository.save(kapsejladsDeltager);
         return new ResponseEntity<>(createdDeltager, HttpStatus.CREATED);
