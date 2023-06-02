@@ -2,8 +2,10 @@ package com.example.programmeringseksamensemester3.controller;
 
 import com.example.programmeringseksamensemester3.model.Kapsejlads;
 import com.example.programmeringseksamensemester3.model.KapsejladsDeltager;
+import com.example.programmeringseksamensemester3.model.Sejlbåd;
 import com.example.programmeringseksamensemester3.repository.KapsejladsDeltagerRepository;
 import com.example.programmeringseksamensemester3.repository.KapsejladsRepository;
+import com.example.programmeringseksamensemester3.repository.SejlbådRepository;
 import jakarta.persistence.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -24,6 +27,9 @@ public class KapsejladsDeltagerController {
     @Autowired
     KapsejladsRepository  kapsejladsRepository;
 
+    @Autowired
+    SejlbådRepository sejlbådRepository;
+
     @GetMapping("/getAllByKapsejlads")
     public ResponseEntity<List<KapsejladsDeltager>> getAllKapsejladsDeltagere(@RequestBody Kapsejlads kapsejlads) {
         List<KapsejladsDeltager> deltagerList = kapsejladsDeltagerRepository.getKapsejladsDeltagerByKapsejlads(kapsejlads);
@@ -31,7 +37,21 @@ public class KapsejladsDeltagerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<KapsejladsDeltager> createKapsejladsDeltager(@RequestBody KapsejladsDeltager kapsejladsDeltager) {
+    public ResponseEntity<KapsejladsDeltager> createKapsejladsDeltager(@RequestBody Map<String, String> request) {
+        Integer kapsejladsId = Integer.valueOf(request.get("kapsejlads"));
+        Integer sejlbådId = Integer.valueOf(request.get("sejlbåd"));
+        int points = Integer.parseInt(request.get("points"));
+
+        Kapsejlads kapsejlads = kapsejladsRepository.findById(kapsejladsId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Kapsejlads ID: " + kapsejladsId));
+        Sejlbåd sejlbåd = sejlbådRepository.findById(sejlbådId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Sejlbåd ID: " + sejlbådId));
+
+        KapsejladsDeltager kapsejladsDeltager = new KapsejladsDeltager();
+        kapsejladsDeltager.setKapsejlads(kapsejlads);
+        kapsejladsDeltager.setSejlbåd(sejlbåd);
+        kapsejladsDeltager.setPoints(points);
+
         KapsejladsDeltager createdDeltager = kapsejladsDeltagerRepository.save(kapsejladsDeltager);
         return new ResponseEntity<>(createdDeltager, HttpStatus.CREATED);
     }
