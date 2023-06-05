@@ -11,17 +11,27 @@ public class KapsejladsDeltager {
     private int kapsejladsDeltagerId;
 
     @ManyToOne
-    @JoinColumn(name = "kapsejlads_id")
+    @JoinColumn(name = "kapsejlads_id", unique = false)
     @JsonBackReference
     private Kapsejlads kapsejlads;
 
-    @OneToOne
-    @JoinColumn(name = "sejlbåd_id")
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "sejlbåd_id", unique = false)
+    //@JsonBackReference
     private Sejlbåd sejlbåd;
 
 
     private int points;
+
+    private int placering;
+
+    public int getPlacering() {
+        return placering;
+    }
+
+    public void setPlacering(int placering) {
+        this.placering = placering;
+    }
 
     public int getKapsejladsDeltagerId() {
         return kapsejladsDeltagerId;

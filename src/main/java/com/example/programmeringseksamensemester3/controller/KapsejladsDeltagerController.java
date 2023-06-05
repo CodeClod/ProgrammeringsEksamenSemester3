@@ -30,17 +30,12 @@ public class KapsejladsDeltagerController {
     @Autowired
     SejlbådRepository sejlbådRepository;
 
-    @GetMapping("/getAllByKapsejlads")
-    public ResponseEntity<List<KapsejladsDeltager>> getAllKapsejladsDeltagere(@RequestBody Kapsejlads kapsejlads) {
-        List<KapsejladsDeltager> deltagerList = kapsejladsDeltagerRepository.getKapsejladsDeltagerByKapsejlads(kapsejlads);
-        return new ResponseEntity<>(deltagerList, HttpStatus.OK);
-    }
-
     @PostMapping("/create")
     public ResponseEntity<KapsejladsDeltager> createKapsejladsDeltager(@RequestBody Map<String, String> request) {
         Integer kapsejladsId = Integer.valueOf(request.get("kapsejlads"));
         Integer sejlbådId = Integer.valueOf(request.get("sejlbåd"));
         int points = Integer.parseInt(request.get("points"));
+        int placering = Integer.parseInt(request.get("placering"));
 
         Kapsejlads kapsejlads = kapsejladsRepository.findById(kapsejladsId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Kapsejlads ID: " + kapsejladsId));
@@ -51,9 +46,16 @@ public class KapsejladsDeltagerController {
         kapsejladsDeltager.setKapsejlads(kapsejlads);
         kapsejladsDeltager.setSejlbåd(sejlbåd);
         kapsejladsDeltager.setPoints(points);
+        kapsejladsDeltager.setPlacering(placering);
 
-        KapsejladsDeltager createdDeltager = kapsejladsDeltagerRepository.save(kapsejladsDeltager);
-        return new ResponseEntity<>(createdDeltager, HttpStatus.CREATED);
+        System.out.println(kapsejladsDeltager.getSejlbåd());
+        System.out.println(kapsejladsDeltager.getKapsejladsDeltagerId());
+        KapsejladsDeltager createdKapsejladsDeltager = kapsejladsDeltagerRepository.save(kapsejladsDeltager);
+
+        System.out.println(createdKapsejladsDeltager.getKapsejlads());
+        System.out.println(createdKapsejladsDeltager.getKapsejladsDeltagerId());
+
+        return new ResponseEntity<>(createdKapsejladsDeltager, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -73,6 +75,11 @@ public class KapsejladsDeltagerController {
         return new ResponseEntity<>(deltagerList, HttpStatus.OK);
     }
 
+    @GetMapping("/getAllByKapsejladsId/{kapsejladsId}")
+    public ResponseEntity<List<KapsejladsDeltager>> getAllKapsejladsDeltagereByKapsejladsId(@PathVariable int kapsejladsId) {
+        List<KapsejladsDeltager> deltagerList = kapsejladsDeltagerRepository.findKapsejladsDeltagersByKapsejlads_KapsejladsId(kapsejladsId);
+        return new ResponseEntity<>(deltagerList, HttpStatus.OK);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<KapsejladsDeltager> updateKapsejladsDeltager(
             @PathVariable int id, @RequestBody KapsejladsDeltager kapsejladsDeltager) {

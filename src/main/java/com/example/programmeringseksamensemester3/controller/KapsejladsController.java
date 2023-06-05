@@ -17,7 +17,7 @@ public class KapsejladsController {
     KapsejladsRepository kapsejladsRepository;
 
     @GetMapping("/kapsejladsInOrder")
-    private List<Kapsejlads> returnAllKapsejladsInAscOrder() {
-        return kapsejladsRepository.findAllByOrderByKapsejladsDatoAsc();
+    private List<Kapsejlads> returnAllKapsejladsInOrder() {
+        return kapsejladsRepository.findAllByOrderByKapsejladsId();
     }
 }

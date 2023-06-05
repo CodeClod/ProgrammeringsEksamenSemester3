@@ -10,16 +10,18 @@ public class Sejlbåd {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int sejlbådId;
 
+
     private String navn;
     private String bådtype;
 
+
     /*
-    @OneToOne
-    @JoinColumn(name = "kapsejlads_deltager_id")
-    private KapsejladsDeltager kapsejladsDeltager;
+        @OneToOne
+        @JoinColumn(name = "kapsejlads_deltager_id")
+        private KapsejladsDeltager kapsejladsDeltager;
 
 
-     */
+         */
     public int getSejlbådId() {
         return sejlbådId;
     }

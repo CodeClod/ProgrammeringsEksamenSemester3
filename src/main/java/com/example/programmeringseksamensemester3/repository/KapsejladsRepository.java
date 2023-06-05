@@ -9,4 +9,6 @@ public interface KapsejladsRepository extends JpaRepository<Kapsejlads, Integer>
 
     List<Kapsejlads> findAllByOrderByKapsejladsDatoAsc();
 
+    List<Kapsejlads> findAllByOrderByKapsejladsId();
+
 }
